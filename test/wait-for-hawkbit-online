@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# Loops with 5 second intervals to Wait for hawkbit server to be ready to
+# accept connections.
+# This should be run once before continuing with tests and scripts that
+# interact with hawkbit.
+
+printf "Waiting for hawkbit to come up "
+cycles=0
+until $(curl --output /dev/null --silent --head --fail http://localhost:8080); do
+    printf '.'
+    [ $((cycles++)) -gt 10 ] && printf " failed\n" && exit 1
+    sleep 5
+done
+
+printf '\n'
